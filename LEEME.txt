@@ -16,12 +16,12 @@ Abriendo index.html con doble clic funciona como siempre, pero no se puede insta
 ----------------------------
 Opción A · GitHub Pages (gratis; vale la cuenta de GitHub del centro)
   1. Entra en github.com con la cuenta del centro.
-  2. Botón «New» → nombre del repositorio, por ejemplo: notas-criterios → «Public» → «Create repository».
+  2. Botón «New» → nombre del repositorio, por ejemplo: notas → «Public» → «Create repository».
   3. «uploading an existing file» → arrastra TODO el contenido de esta carpeta
-     (index.html, manifest.webmanifest, sw.js y la carpeta icons) → «Commit changes».
+     (index.html, manifest.webmanifest, sw.js y los .png) → «Commit changes».
   4. «Settings» → «Pages» → en «Branch» elige «main» y «/ (root)» → «Save».
   5. En uno o dos minutos la app estará en:
-     https://iesluisdiegocuscoy.github.io/notas-criterios/
+     https://iesluisdiegocuscoy.github.io/notas/
   Esa dirección solo contiene la herramienta vacía: las notas NO se suben a GitHub,
   se quedan en el ordenador de cada profesor.
 

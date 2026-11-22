@@ -1,7 +1,7 @@
 // Service worker: permite usar la app sin conexión y recibir actualizaciones.
-const CACHE = 'notas-criterios-v1';
-const ASSETS = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png',
-  './icons/maskable-512.png', './icons/apple-touch-icon.png', './icons/favicon-64.png'];
+const CACHE = 'notas-criterios-v2';
+const ASSETS = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png',
+  './maskable-512.png', './apple-touch-icon.png', './favicon-64.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
