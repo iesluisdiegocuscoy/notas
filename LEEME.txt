@@ -1,0 +1,59 @@
+APP «CALIFICACIÓN POR CRITERIOS · ESO»
+======================================
+
+Contenido de la carpeta
+-----------------------
+index.html             La aplicación completa.
+manifest.webmanifest   Nombre, icono y colores de la app (para poder instalarla).
+sw.js                  Permite usarla sin conexión y recibir actualizaciones.
+icons/                 Iconos de la app.
+
+Hay que subir la carpeta completa, tal cual, a una dirección web segura (https).
+Abriendo index.html con doble clic funciona como siempre, pero no se puede instalar como app.
+
+
+1. PUBLICARLA (una sola vez)
+----------------------------
+Opción A · GitHub Pages (gratis; vale la cuenta de GitHub del centro)
+  1. Entra en github.com con la cuenta del centro.
+  2. Botón «New» → nombre del repositorio, por ejemplo: notas-criterios → «Public» → «Create repository».
+  3. «uploading an existing file» → arrastra TODO el contenido de esta carpeta
+     (index.html, manifest.webmanifest, sw.js y la carpeta icons) → «Commit changes».
+  4. «Settings» → «Pages» → en «Branch» elige «main» y «/ (root)» → «Save».
+  5. En uno o dos minutos la app estará en:
+     https://iesluisdiegocuscoy.github.io/notas-criterios/
+  Esa dirección solo contiene la herramienta vacía: las notas NO se suben a GitHub,
+  se quedan en el ordenador de cada profesor.
+
+Opción B · Cualquier servidor web con acceso por FTP o administrador de archivos
+  Sube la carpeta completa (por ejemplo como /notas/) y la app estará en https://tu-dominio/notas/
+  (La biblioteca de Medios de WordPress no sirve: no admite estos archivos.)
+
+Después, pon un enlace a esa dirección en la web del centro o en la zona del profesorado.
+
+
+2. INSTALARLA (cada profesor, una vez)
+--------------------------------------
+  1. Abre la dirección con Chrome o Edge.
+  2. Pulsa el botón «⬇ Instalar app» de la barra azul, o el icono de instalar que aparece
+     a la derecha de la barra de direcciones.
+  3. Queda un icono en el escritorio / menú de inicio. Se abre en su propia ventana
+     y funciona sin internet.
+  En móvil o tablet: menú del navegador → «Instalar aplicación» o «Añadir a pantalla de inicio».
+
+
+3. DATOS
+--------
+  - Las notas se guardan solo en ese dispositivo, dentro de la app.
+  - «Guardar archivo» (Ctrl+S) crea una copia en un archivo .json: es la copia de seguridad
+    y la forma de pasar los datos a otro ordenador («Abrir archivo»).
+  - Si alguien usaba el HTML suelto: en el HTML, «Guardar archivo»; en la app, «Abrir archivo».
+  - En un ordenador compartido: guardar el archivo y luego, en Configuración,
+    «Eliminar este grupo de este navegador».
+
+
+4. ACTUALIZARLA
+---------------
+  Sustituye index.html en el sitio donde la publicaste (en GitHub: abre el archivo → «Upload files»
+  y arrastra el nuevo). La próxima vez que cada profesor abra la app con internet,
+  tendrá la versión nueva automáticamente. Sus datos no se pierden.

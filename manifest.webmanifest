@@ -1,0 +1,16 @@
+{
+  "name": "Calificación por criterios · ESO",
+  "short_name": "Notas criterios",
+  "description": "Calificación por criterios de evaluación de la ESO (currículo de Canarias). Los datos se guardan solo en el dispositivo.",
+  "lang": "es",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f6f8",
+  "theme_color": "#1f4e78",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
