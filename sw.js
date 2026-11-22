@@ -1,5 +1,5 @@
 // Service worker: permite usar la app sin conexión y recibir actualizaciones.
-const CACHE = 'notas-criterios-v2';
+const CACHE = 'notas-criterios-v3';
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png',
   './maskable-512.png', './apple-touch-icon.png', './favicon-64.png'];
 
@@ -16,7 +16,7 @@ self.addEventListener('fetch', e => {
   const isPage = req.mode === 'navigate' || req.url.endsWith('/index.html');
   if (isPage) {
     // Primero la red (para recibir la última versión); si no hay conexión, la copia guardada.
-    e.respondWith(fetch(req).then(res => {
+    e.respondWith(fetch(req, {cache: 'no-cache'}).then(res => {
       const copy = res.clone(); caches.open(CACHE).then(c => c.put('./index.html', copy)); return res;
     }).catch(() => caches.match('./index.html')));
   } else {
