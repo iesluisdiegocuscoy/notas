@@ -249,7 +249,7 @@ try { const s = JSON.parse(localStorage.getItem(LS_KEY)); if (s && s.grupos) sto
 for (const g of Object.values(store.grupos)) if (!g.demo && g.datos && g.datos.grupo==='Ejemplo' && g.alumnos && g.alumnos[0] && g.alumnos[0].nombre==='Alba Rodríguez') g.demo=true;
 let tab = 'config', curStu = null, fileHandle = null, dirtyFile = false;
 
-function blank(){ return { id:uid(), datos:{materia:'',curso:'',grupo:'',evaluacion:'',docente:''},
+function blank(){ return { id:uid(), datos:{materia:'',curso:'',grupo:'',evaluacion:''},
   metodoDef:'moda', alumnos:[], criterios:[], instrumentos:[], notas:{}, metodo:{}, eleccion:{}, eleccionFinal:{}, justif:{} }; }
 function D(){ return store.grupos[store.activo]; }
 function persist(){ try { localStorage.setItem(LS_KEY, JSON.stringify(store)); } catch(e) {} }
@@ -332,7 +332,7 @@ function renderConfig(v){
   v.innerHTML = `
   <div class="card"><h2>Datos del grupo</h2>
    <div class="grid2">
-    ${[['materia','Materia'],['curso','Curso'],['grupo','Grupo'],['evaluacion','Evaluación'],['docente','Docente']].map(([k,l])=>`<label>${l}<input type="text" data-dato="${k}" value="${esc(x[k])}"></label>`).join('')}
+    ${[['materia','Materia'],['curso','Curso'],['grupo','Grupo'],['evaluacion','Evaluación']].map(([k,l])=>`<label>${l}<input type="text" data-dato="${k}" value="${esc(x[k])}"></label>`).join('')}
     <label>Método por defecto de cada criterio<select id="mDef">${Object.entries(METH).map(([k,l])=>`<option value="${k}" ${d.metodoDef===k?'selected':''}>${l}</option>`).join('')}</select></label>
    </div>
    <p class="hint mt">El método por defecto se aplica a todos los criterios; luego, en «Calificar», puedes cambiarlo en cada caso.</p>
@@ -595,7 +595,7 @@ async function exportXlsx(){
   toast('Generando Excel…');
   const x=d.datos, wb=new ExcelJS.Workbook(); wb.creator='Calificación por criterios'; wb.created=new Date();
   const titulo=['Calificación por criterios',x.materia,x.curso,x.grupo,x.evaluacion].filter(Boolean).join(' · ');
-  const sub=[x.docente?'Docente: '+x.docente:'', 'Exportado el '+new Date().toLocaleString('es-ES'), 'Nota de cada criterio: moda, última o más alta · Nota final: mediana de los criterios'].filter(Boolean).join('   ·   ');
+  const sub=['Exportado el '+new Date().toLocaleString('es-ES'), 'Nota de cada criterio: moda, última o más alta · Nota final: mediana de los criterios'].filter(Boolean).join('   ·   ');
   const C=d.criterios, I=d.instrumentos;
 
   /* ---- Hoja 1: Resumen ---- */
@@ -667,7 +667,7 @@ async function exportXlsx(){
   const wc=wb.addWorksheet('Configuración');
   wc.columns=[{width:22},{width:100}]; xTitle(wc,titulo+' · Configuración',sub,2);
   let q=4; const kv=(k,v)=>{ const a=wc.getCell(q,1), b=wc.getCell(q,2); a.value=k; b.value=v; a.font={name:XF,size:10,bold:true}; b.font={name:XF,size:10}; a.border=b.border=xBorder; xFill(a,'FFF0F3F7'); q++; };
-  kv('Materia',x.materia); kv('Curso',x.curso); kv('Grupo',x.grupo); kv('Evaluación',x.evaluacion); kv('Docente',x.docente);
+  kv('Materia',x.materia); kv('Curso',x.curso); kv('Grupo',x.grupo); kv('Evaluación',x.evaluacion);
   kv('Método por defecto',METH[d.metodoDef]); kv('Nota final','Mediana de las calificaciones de los criterios calificados'); kv('Alumnado',d.alumnos.length);
   q++; const h1=wc.getRow(q); h1.values=['Instrumento (orden cronológico)','Criterios que evalúa']; xHead(h1); q++;
   I.forEach((ins,i)=>{ const row=wc.getRow(q); row.values=[`${i+1}. ${ins.nombre}`, C.filter(c=>ins.criterios.includes(c.id)).map(c=>c.codigo).join(', ')];
@@ -747,10 +747,10 @@ async function exportWork(){
   const wc=wb.addWorksheet(WK.cfg,{properties:{tabColor:{argb:'FF1F4E78'}}});
   wc.columns=[{width:36},{width:4},{width:10},{width:90}];
   xTitle(wc,titulo+' · Configuración','Rellena solo las celdas amarillas. No cambies el orden del alumnado ni de los criterios; para añadir alumnado, escríbelo al final.',4);
-  const datos=[['Materia',x.materia],['Curso',x.curso],['Grupo',x.grupo],['Evaluación',x.evaluacion],['Docente',x.docente],['Método por defecto',METH[d.metodoDef]]];
+  const datos=[['Materia',x.materia],['Curso',x.curso],['Grupo',x.grupo],['Evaluación',x.evaluacion],['Método por defecto',METH[d.metodoDef]]];
   datos.forEach(([k,v],i)=>{ const r=4+i; const a=wc.getCell(r,1); a.value=k; a.font={name:XF,size:10,bold:true}; a.border=xBorder; xFill(a,'FFF0F3F7');
     sm(wc,r,2,r,4); const b=wc.getCell(r,2); b.value=v||''; inpStyle(b); b.alignment={horizontal:'left',vertical:'middle'}; });
-  dv(wc,'B9:B9',MV2);
+  dv(wc,'B8:B8',MV2);
   const ha=wc.getRow(STU0-1); ha.getCell(1).value='Alumnado (añade al final; no cambies el orden)'; ha.getCell(3).value='Criterio'; ha.getCell(4).value='Descripción';
   [1,3,4].forEach(j=>{ const c=ha.getCell(j); xFill(c,'FF1F4E78'); c.font={name:XF,size:10,bold:true,color:{argb:'FFFFFFFF'}}; c.alignment={horizontal:'center',vertical:'middle',wrapText:true}; c.border=xBorder; }); ha.height=28;
   for(let i=0;i<NA;i++){ const c=wc.getCell(STU0+i,1); c.value=d.alumnos[i]?d.alumnos[i].nombre:''; inpStyle(c); c.alignment={horizontal:'left',vertical:'middle'}; }
@@ -795,7 +795,7 @@ async function exportWork(){
   xTitle(wq,titulo+' · Calificación de criterios','Amarillo = lo eliges tú (método, elección si empate, justificación). Usa el filtro de «Alumno/a» para ver solo uno.',13);
   const hq=wq.getRow(4); hq.values=['Alumno/a','Criterio','IN','SU','NT','SB','Moda','Última','Más alta','Método','Elección si empate','Calificación del criterio','Justificación (vacía = frase del método)','n','num','just']; xHead(hq); hq.height=30;
   [14,15,16].forEach(j=>wq.getColumn(j).hidden=true);
-  const defM=`${Q(WK.cfg)}!$B$9`;
+  const defM=`${Q(WK.cfg)}!$B$8`;
   for(let s=0;s<NA;s++){ const al=d.alumnos[s];
     d.criterios.forEach((cr,ci)=>{ const r=CAL0+s*C+ci; const X=critCol(ci); const rng=`${WK.notas}!$${X}$${B0}:$${X}$${nEnd}`;
       const mod=`(MOD(ROW(${rng})-${B0},${H})=${s+2})`;
@@ -898,7 +898,7 @@ async function exportWork(){
 
   /* meta (hidden) */
   const wm=wb.addWorksheet(WK.meta,{state:'veryHidden'});
-  wm.getCell(1,1).value=JSON.stringify({app:'calificacion-criterios',tipo:'excel-trabajo',version:1,groupId:d.id,layout:L,
+  wm.getCell(1,1).value=JSON.stringify({app:'calificacion-criterios',tipo:'excel-trabajo',version:2,groupId:d.id,layout:L,
     alumnos:d.alumnos.map(a=>a.id),criterios:d.criterios.map(c=>c.id),instrumentos:d.instrumentos.map(i=>({id:i.id,criterios:i.criterios}))});
   wb.views=[{activeTab:1,firstSheet:1}];
   const buf=await wb.xlsx.writeBuffer();
@@ -923,8 +923,8 @@ async function importWork(buf){
   const prev=store.grupos[meta.groupId];
   if(prev && !confirm(`Vas a sustituir los datos de «${label(prev)}» en la herramienta por los del Excel. ¿Continuar?`)) return;
   const d=blank(); d.id=meta.groupId; if(prev) d.datos._pm=prev.datos._pm;
-  ['materia','curso','grupo','evaluacion','docente'].forEach((k,i)=>d.datos[k]=cv(wc.getCell(4+i,2)));
-  d.metodoDef=METH_KEY[cv(wc.getCell(9,2))]||'moda';
+  ['materia','curso','grupo','evaluacion'].forEach((k,i)=>d.datos[k]=cv(wc.getCell(4+i,2)));
+  d.metodoDef=METH_KEY[cv(wc.getCell((meta.version||1)<2?9:8,2))]||'moda';
   // alumnado (por posición)
   const sIdx=[]; for(let s=0;s<NA;s++){ const n=cv(wc.getCell(STU0+s,1)); if(!n){ sIdx.push(null); continue; } const id=meta.alumnos[s]||uid(); d.alumnos.push({id,nombre:n}); sIdx.push(id); }
   // criterios
@@ -950,7 +950,7 @@ async function importWork(buf){
 
 /* ---------- demo ---------- */
 function demo(){
-  const d=blank(); d.demo=true; d.datos={materia:'Matemáticas',curso:'4.º ESO',grupo:'Ejemplo',evaluacion:'1.ª evaluación',docente:''};
+  const d=blank(); d.demo=true; d.datos={materia:'Matemáticas',curso:'4.º ESO',grupo:'Ejemplo',evaluacion:'1.ª evaluación'};
   PRESETS['Matemáticas']['4.º ESO · Matemáticas B'].forEach(([c,t])=>d.criterios.push({id:uid(),codigo:c,desc:t}));
   ['Alba Rodríguez','Bruno Hernández','Carla Pérez','Daniel González','Elena Díaz','Fabio Martín'].forEach(n=>d.alumnos.push({id:uid(),nombre:n}));
   const pick=codes=>d.criterios.filter(c=>codes.includes(c.codigo)).map(c=>c.id);
